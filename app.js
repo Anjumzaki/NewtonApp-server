@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const User = require("./models/User");
 const Message = require("./models/Message");
 const Video = require("./models/Video");
-const Blog = require("./models/Blog");
+const Transaction = require("./models/Transaction");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const multer = require("multer");
@@ -201,9 +201,9 @@ app.get("/get/messages", async (req, res) => {
 });
 
 //get all blogs  
-app.get("/get/blogs", async (req, res) => {
+app.get("/get/Transaction", async (req, res) => {
   console.log("call")
-  var result = await Blog.find().exec();
+  var result = await Transaction.find().exec();
   res.status(200).send({
     success: 'true',
     message: 'blog get Success',
@@ -326,28 +326,34 @@ app.post('/post/message', async (req, res) => {
 });
 
 //post blog
-app.post('/post/blog', async (req, res) => {
+app.post('/post/transaction', async (req, res) => {
   console.log(req.body)
-  let blog = new Blog({
-    title: req.body.title,
-    description: req.body.description,
-    feature: req.body.feature,
-    time: req.body.time,
-    blogImage: req.body.imageLink
+  let transaction = new Transaction({
+    soldDate: req.body.soldDate,
+    payDate: req.body.payDate,
+    name: req.body.name,
+    contact: req.body.contact,
+    volume: req.body.volume,
+    downPayment: req.body.downPayment,
+    spiff: req.body.spiff,
+    note: req.body.note,
+    pmdDeduction: req.body.pmdDeduction,
+    commision: req.body.commision,
+    bonus: req.body.bonus,
   });
-  blog.save(function (err) {
+  transaction.save(function (err) {
     if (err) {
       console.error(err);
       res.status(500).send({
         success: 'false',
-        message: 'blog not post',
-        blog,
+        message: 'Transaction not sucessfull',
+        transaction,
       })
     } else {
       res.status(200).send({
         success: 'true',
-        message: 'blog post',
-        blog,
+        message: 'Transaction sucessfull',
+        transaction,
       })
     }
   });
