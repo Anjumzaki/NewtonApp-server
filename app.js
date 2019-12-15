@@ -236,7 +236,6 @@ app.post('/register', function (req, res) {
         let newUser = new User({
           userName: req.body.userName,
           email: req.body.email,
-          mobile: req.body.mobile,
           password: req.body.password
         });
 
