@@ -388,6 +388,43 @@ app.post('/post/video', async (req, res) => {
 
 });
 
+
+//post transaction
+app.post('/post/transaction', async (req, res) => {
+  console.log(req.body)
+
+  let trans = new Transaction({
+    payDate: req.body.payDate,
+    name: req.body.name,
+    contact: req.body.contact,
+    volume: req.body.volume,
+    downPayment:req.body.downPay,
+    spiff:req.body.spiff,
+    note:req.body.note,
+    commission: req.body.commission,
+    bonus: req.body.bonus,
+    pmdDeduction: req.body.pmdDeduction
+  });
+
+  trans.save(function (err) {
+    if (err) {
+      console.error(err);
+      res.status(200).send({
+        success: 'false',
+        message: 'transc not post',
+        msg,
+      })
+    } else {
+      res.status(200).send({
+        success: 'true',
+        message: 'transc post',
+        msg,
+      })
+    }
+  });
+
+});
+
 // logout
 app.get('/logout', function (req, res) {
   req.logout();
