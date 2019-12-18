@@ -304,7 +304,6 @@ app.post('/post/message', async (req, res) => {
     message: req.body.message,
     time: req.body.time
   });
-
   msg.save(function (err) {
     if (err) {
       console.error(err);
@@ -321,79 +320,17 @@ app.post('/post/message', async (req, res) => {
       })
     }
   });
-
 });
 
 //post blog
-app.post('/post/transaction', async (req, res) => {
-  console.log(req.body)
-  let transaction = new Transaction({
-    soldDate: req.body.soldDate,
-    payDate: req.body.payDate,
-    name: req.body.name,
-    contact: req.body.contact,
-    volume: req.body.volume,
-    downPayment: req.body.downPayment,
-    spiff: req.body.spiff,
-    note: req.body.note,
-    pmdDeduction: req.body.pmdDeduction,
-    commision: req.body.commision,
-    bonus: req.body.bonus,
-  });
-  transaction.save(function (err) {
-    if (err) {
-      console.error(err);
-      res.status(500).send({
-        success: 'false',
-        message: 'Transaction not sucessfull',
-        transaction,
-      })
-    } else {
-      res.status(200).send({
-        success: 'true',
-        message: 'Transaction sucessfull',
-        transaction,
-      })
-    }
-  });
-
-});
 
 //post video
-app.post('/post/video', async (req, res) => {
-  console.log(req.body)
-  let blog = new Video({
-    title: req.body.title,
-    description: req.body.description,
-    feature: req.body.feature,
-    time: req.body.time,
-    videoUrl:req.body.videoUrl,
-  });
-  blog.save(function (err) {
-    if (err) {
-      console.error(err);
-      res.status(500).send({
-        success: 'false',
-        message: 'blog not post',
-        blog,
-      })
-    } else {
-      res.status(200).send({
-        success: 'true',
-        message: 'blog post',
-        blog,
-      })
-    }
-  });
-
-});
-
 
 //post transaction
 app.post('/post/transaction', async (req, res) => {
   console.log(req.body)
-
   let trans = new Transaction({
+    soldDate: req.body.soldDate,
     payDate: req.body.payDate,
     name: req.body.name,
     contact: req.body.contact,
@@ -412,13 +349,13 @@ app.post('/post/transaction', async (req, res) => {
       res.status(200).send({
         success: 'false',
         message: 'transc not post',
-        msg,
+        trans,
       })
     } else {
       res.status(200).send({
         success: 'true',
         message: 'transc post',
-        msg,
+        trans,
       })
     }
   });
