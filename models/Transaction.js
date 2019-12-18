@@ -36,7 +36,7 @@ const TransSchema = new Schema({
     required: true
   },
   pmdDeduction: {
-    type: Boolean,
+    type: String,
     required: true
   },
   commission: {
