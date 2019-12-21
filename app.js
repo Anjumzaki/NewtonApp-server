@@ -280,7 +280,8 @@ app.post('/login',
         bcrypt.compare(req.body.password, response.password, function (err, isMatch) {
           if (err) throw err;
           if (isMatch) {
-            res.send("match")
+            res.send({response: response,
+                      resp: "match"})
           } else {
             res.send("wrong")
           }
@@ -330,18 +331,18 @@ app.post('/post/message', async (req, res) => {
 app.post('/post/transaction', async (req, res) => {
   console.log(req.body)
   let trans = new Transaction({
-    soldDate: req.body.soldDate,
+    // soldDate: req.body.soldDate,
     payDate: req.body.payDate,
     name: req.body.name,
     contact: req.body.contact,
     volume: req.body.volume,
-    downPayment: req.body.downPay,
+    downPayment: req.body.downPayment,
     spiff: req.body.spiff,
     note: req.body.note,
     commission: req.body.commission,
     bonus: req.body.bonus,
     pmdDeduction: req.body.pmdDeduction,
-    user: req.body.user
+    userId: req.body.userId
   });
 
   trans.save(function (err) {
@@ -362,6 +363,18 @@ app.post('/post/transaction', async (req, res) => {
   });
 
 });
+
+//get all transctions
+app.get('/get/all/transactions/:uid', (req, res) => {
+
+  Transaction.find({ userId: req.params.uid })
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
 
 // logout
 app.get('/logout', function (req, res) {
