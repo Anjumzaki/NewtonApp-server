@@ -47,6 +47,10 @@ const TransSchema = new Schema({
     type: String,
     required: true
   },
+  user: {
+    type: String,
+    required: true
+  },
 });
 
 module.exports = transaction = mongoose.model('transaction', TransSchema);

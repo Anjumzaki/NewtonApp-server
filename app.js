@@ -46,9 +46,9 @@ app.post('/upload', upload.single('photo'), (req, res, next) => {
     if (err) {
       console.log('Error: ', err);
     }
-    else{
-    res.status(200)
-    res.send(fn).end();
+    else {
+      res.status(200)
+      res.send(fn).end();
     }
   });
 });
@@ -115,15 +115,15 @@ app.use(bodyParser.json());
 
 
 //delete blog by id
-app.delete('/delete/blog/:id',(req, res) => {
-  
+app.delete('/delete/blog/:id', (req, res) => {
+
   Blog.findOne({ _id: req.params.id }).then(blog => {
     blog.remove().then(() => res.json({ success: true, message: "blog deleted" }));
   });
 }
 );
-app.delete('/delete/Video/:id',(req, res) => {
-  
+app.delete('/delete/Video/:id', (req, res) => {
+
   Video.findOne({ _id: req.params.id }).then(blog => {
     blog.remove().then(() => res.json({ success: true, message: "blog deleted" }));
   });
@@ -135,10 +135,10 @@ app.delete('/delete/Video/:id',(req, res) => {
 app.get('/get/oneblog/:id', (req, res) => {
 
   Blog.findOne({ _id: req.params.id })
-  .then(blog => {
-    res.json(blog);
-  })
-  .catch(err => res.status(404).json(err));
+    .then(blog => {
+      res.json(blog);
+    })
+    .catch(err => res.status(404).json(err));
 }
 
 );
@@ -146,47 +146,47 @@ app.get('/get/oneblog/:id', (req, res) => {
 app.get('/get/oneVideo/:id', (req, res) => {
 
   Video.findOne({ _id: req.params.id })
-  .then(blog => {
-    res.json(blog);
-  })
-  .catch(err => res.status(404).json(err));
+    .then(blog => {
+      res.json(blog);
+    })
+    .catch(err => res.status(404).json(err));
 }
 
 );
 //edit register player slot partnerId
-app.put("/edit/blog/:id", async(req,res) =>{
-  console.log("sadddddd",req.params)
-  Blog.updateOne({_id: req.params.id}, { 
-        $set: { 
-          title: req.body.title,
-          description: req.body.description,
-          feature: req.body.feature,
-          time: req.body.time,
-          blogImage: req.body.imageLink
-        }
-  }, {upsert:true}, function (err, user) {
-            res.status(200).send({
-                success: 'true',
-                message: 'player edit done'
-            })
-    });
+app.put("/edit/blog/:id", async (req, res) => {
+  console.log("sadddddd", req.params)
+  Blog.updateOne({ _id: req.params.id }, {
+    $set: {
+      title: req.body.title,
+      description: req.body.description,
+      feature: req.body.feature,
+      time: req.body.time,
+      blogImage: req.body.imageLink
+    }
+  }, { upsert: true }, function (err, user) {
+    res.status(200).send({
+      success: 'true',
+      message: 'player edit done'
+    })
+  });
 })
-app.put("/edit/video/:id", async(req,res) =>{
-  console.log("sadddddd",req.params)
-  Video.updateOne({_id: req.params.id}, { 
-        $set: { 
-          title: req.body.title,
-          description: req.body.description,
-          feature: req.body.feature,
-          time: req.body.time,
-          videoUrl: req.body.imageLink
-        }
-  }, {upsert:true}, function (err, user) {
-            res.status(200).send({
-                success: 'true',
-                message: 'player edit done'
-            })
-    });
+app.put("/edit/video/:id", async (req, res) => {
+  console.log("sadddddd", req.params)
+  Video.updateOne({ _id: req.params.id }, {
+    $set: {
+      title: req.body.title,
+      description: req.body.description,
+      feature: req.body.feature,
+      time: req.body.time,
+      videoUrl: req.body.imageLink
+    }
+  }, { upsert: true }, function (err, user) {
+    res.status(200).send({
+      success: 'true',
+      message: 'player edit done'
+    })
+  });
 })
 
 //get all msgs  
@@ -335,12 +335,13 @@ app.post('/post/transaction', async (req, res) => {
     name: req.body.name,
     contact: req.body.contact,
     volume: req.body.volume,
-    downPayment:req.body.downPay,
-    spiff:req.body.spiff,
-    note:req.body.note,
+    downPayment: req.body.downPay,
+    spiff: req.body.spiff,
+    note: req.body.note,
     commission: req.body.commission,
     bonus: req.body.bonus,
-    pmdDeduction: req.body.pmdDeduction
+    pmdDeduction: req.body.pmdDeduction,
+    user: req.body.user
   });
 
   trans.save(function (err) {
