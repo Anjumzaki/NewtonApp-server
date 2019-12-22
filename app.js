@@ -333,7 +333,7 @@ app.post('/post/message', async (req, res) => {
 app.post('/post/transaction', async (req, res) => {
   console.log(req.body)
   let trans = new Transaction({
-    // soldDate: req.body.soldDate,
+    soldDate: req.body.soldDate,
     payDate: req.body.payDate,
     name: req.body.name,
     contact: req.body.contact,

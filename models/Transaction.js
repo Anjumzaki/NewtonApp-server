@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const TransSchema = new Schema({
-  // soldDate: {
-  //   type: String,
-  //   required: true
-  // },
+  soldDate: {
+    type: String,
+    required: true
+  },
   payDate: {
     type: String,
     required: true
