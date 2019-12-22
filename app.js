@@ -9,6 +9,8 @@ const User = require("./models/User");
 const Message = require("./models/Message");
 const Video = require("./models/Video");
 const Transaction = require("./models/Transaction");
+const Goal = require("./models/Goal");
+const Amount = require("./models/Amount");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const multer = require("multer");
@@ -358,6 +360,66 @@ app.post('/post/transaction', async (req, res) => {
         success: 'true',
         message: 'transc post',
         trans,
+      })
+    }
+  });
+
+});
+
+
+//post goals
+app.post('/post/goals', async (req, res) => {
+  console.log(req.body)
+  let goal = new Goal({
+    selectedYear: req.body.selectedYear,
+    spiff: req.body.spiff,
+    commission: req.body.commission,
+    bonus: req.body.bonus
+  });
+
+  goal.save(function (err) {
+    if (err) {
+      console.error(err);
+      res.status(200).send({
+        success: 'false',
+        message: 'goal not post',
+        goal,
+      })
+    } else {
+      res.status(200).send({
+        success: 'true',
+        message: 'goal post',
+        goal,
+      })
+    }
+  });
+
+});
+
+
+//post fixed amount
+app.post('/post/amount', async (req, res) => {
+  console.log(req.body)
+  let amount = new Amount({
+    selectedYear: req.body.selectedYear,
+    spiff: req.body.spiff,
+    commission: req.body.commission,
+    bonus: req.body.bonus
+  });
+
+  amount.save(function (err) {
+    if (err) {
+      console.error(err);
+      res.status(200).send({
+        success: 'false',
+        message: 'amount not post',
+        amount,
+      })
+    } else {
+      res.status(200).send({
+        success: 'true',
+        message: 'amount post',
+        amount,
       })
     }
   });
