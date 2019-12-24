@@ -233,7 +233,7 @@ app.post('/register', function (req, res) {
     .then(response => {
       console.log("check user", response)
       // res.send(response)
-
+      console.log("asd",response)
       if (response === null) {
         let newUser = new User({
           userName: req.body.userName,
@@ -252,7 +252,14 @@ app.post('/register', function (req, res) {
                 console.log(err);
                 return;
               } else {
-                res.send("registered")
+
+                User.findOne({ userName: req.body.userName })
+                .then(response => {
+                  res.send({response: response,
+                    resp: "registered"})
+                  // res.send("registered")
+
+                })
 
               }
             });
@@ -374,7 +381,8 @@ app.post('/post/goals', async (req, res) => {
     selectedYear: req.body.selectedYear,
     spiff: req.body.spiff,
     commission: req.body.commission,
-    bonus: req.body.bonus
+    bonus: req.body.bonus,
+    userId: req.body.userId
   });
 
   goal.save(function (err) {
@@ -402,9 +410,14 @@ app.post('/post/amount', async (req, res) => {
   console.log(req.body)
   let amount = new Amount({
     selectedYear: req.body.selectedYear,
-    spiff: req.body.spiff,
+    selectedMonth: req.body.selectedMonth,
+    bonus: req.body.bonus,
     commission: req.body.commission,
-    bonus: req.body.bonus
+    pmdDeduction: req.body.pmdDeduction,
+    userId: req.body.userId,
+    commType: req.body.commType,
+    bonusType: req.body.bonusType,
+    pmdDeductionType: req.body.pmdDeductionType
   });
 
   amount.save(function (err) {
@@ -431,6 +444,33 @@ app.get('/get/all/transactions/:uid', (req, res) => {
 
   Transaction.find({ userId: req.params.uid })
     .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
+//get fixed amount
+app.get('/get/fixedAmount/:uid/:year/:month', (req, res) => {
+  console.log(req.params.uid, req.params.year, req.params.month )
+  Amount.findOne({ userId: req.params.uid, selectedYear: req.params.year, selectedMonth: req.params.month })
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
+
+//get goal
+app.get('/get/fixedAmount/:uid/:year', (req, res) => {
+  console.log(req.params.uid, req.params.year)
+  Goal.findOne({ userId: req.params.uid, selectedYear: req.params.year})
+    .then(data => {
+      console.log(data)
       res.json(data);
     })
     .catch(err => res.status(404).json(err));

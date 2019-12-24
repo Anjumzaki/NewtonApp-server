@@ -22,6 +22,22 @@ const AmountSchema = new Schema({
   pmdDeduction: {
     type: String,
     required: true
+  },
+  userId: {
+    type: String,
+    required: true
+  },
+  commType: {
+    type: String,
+    required: true
+  },
+  bonusType: {
+    type: String,
+    required: true
+  },
+  pmdDeductionType: {
+    type: String,
+    required: true
   }
 });
 

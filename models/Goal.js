@@ -18,6 +18,10 @@ const GoalSchema = new Schema({
   bonus: {
     type: String,
     required: true
+  },
+  userId: {
+    type: String,
+    required: true
   }
 });
 
