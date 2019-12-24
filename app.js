@@ -350,7 +350,7 @@ app.post('/post/transaction', async (req, res) => {
   trans.save(function (err) {
     if (err) {
       console.error(err);
-      res.status(200).send({
+      res.status(500).send({
         success: 'false',
         message: 'transc not post',
         trans,
