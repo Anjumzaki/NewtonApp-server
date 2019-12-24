@@ -88,8 +88,6 @@ app.get('*', function (req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
-
-
 app.use("/getBlogPic", express.static(__dirname + '/uploads/'));
 
 app.put("/add/picId/:id/:fn", async (req, res) => {
@@ -233,14 +231,13 @@ app.post('/register', function (req, res) {
     .then(response => {
       console.log("check user", response)
       // res.send(response)
-      console.log("asd",response)
+      console.log("asd", response)
       if (response === null) {
         let newUser = new User({
           userName: req.body.userName,
           email: req.body.email,
           password: req.body.password
         });
-
         bcrypt.genSalt(10, function (err, salt) {
           bcrypt.hash(newUser.password, salt, function (err, hash) {
             if (err) {
@@ -254,20 +251,19 @@ app.post('/register', function (req, res) {
               } else {
 
                 User.findOne({ userName: req.body.userName })
-                .then(response => {
-                  res.send({response: response,
-                    resp: "registered"})
-                  // res.send("registered")
-
-                })
-
+                  .then(response => {
+                    res.send({
+                      response: response,
+                      resp: "registered"
+                    })
+                    // res.send("registered")
+                  })
               }
             });
           });
         });
       } else {
         res.send("exist")
-
       }
     })
 
@@ -289,8 +285,10 @@ app.post('/login',
         bcrypt.compare(req.body.password, response.password, function (err, isMatch) {
           if (err) throw err;
           if (isMatch) {
-            res.send({response: response,
-                      resp: "match"})
+            res.send({
+              response: response,
+              resp: "match"
+            })
           } else {
             res.send("wrong")
           }
@@ -453,7 +451,7 @@ app.get('/get/all/transactions/:uid', (req, res) => {
 
 //get fixed amount
 app.get('/get/fixedAmount/:uid/:year/:month', (req, res) => {
-  console.log(req.params.uid, req.params.year, req.params.month )
+  console.log(req.params.uid, req.params.year, req.params.month)
   Amount.findOne({ userId: req.params.uid, selectedYear: req.params.year, selectedMonth: req.params.month })
     .then(data => {
       console.log(data)
@@ -464,11 +462,9 @@ app.get('/get/fixedAmount/:uid/:year/:month', (req, res) => {
 
 );
 
-
-//get goal
 app.get('/get/fixedAmount/:uid/:year', (req, res) => {
   console.log(req.params.uid, req.params.year)
-  Goal.findOne({ userId: req.params.uid, selectedYear: req.params.year})
+  Amount.findOne({ userId: req.params.uid, selectedYear: req.params.year })
     .then(data => {
       console.log(data)
       res.json(data);
@@ -477,6 +473,19 @@ app.get('/get/fixedAmount/:uid/:year', (req, res) => {
 }
 
 );
+//get goal
+app.get('/get/goal/:uid/:year', (req, res) => {
+  console.log(req.params.uid, req.params.year)
+  Goal.findOne({ userId: req.params.uid, selectedYear: req.params.year })
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
 
 // logout
 app.get('/logout', function (req, res) {
