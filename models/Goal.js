@@ -7,6 +7,10 @@ const GoalSchema = new Schema({
     type: String,
     required: true
   },
+  volume: {
+    type: String,
+    required: true
+  },
   spiff: {
     type: String,
     required: true

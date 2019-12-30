@@ -378,6 +378,7 @@ app.post('/post/goals', async (req, res) => {
   let goal = new Goal({
     selectedYear: req.body.selectedYear,
     spiff: req.body.spiff,
+    volume: req.body.volume,
     commission: req.body.commission,
     bonus: req.body.bonus,
     userId: req.body.userId
@@ -448,6 +449,19 @@ app.get('/get/all/transactions/:uid', (req, res) => {
 }
 
 );
+
+//get all transctions by year
+app.get('/get/all/transactions/yearly/:uid/:year', (req, res) => {
+  console.log("calleddddddd")
+  Transaction.find({userId: req.params.uid, "soldDate" : {$regex : `.*${req.params.year}.*`}})
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
 
 //get fixed amount
 app.get('/get/fixedAmount/:uid/:year/:month', (req, res) => {
