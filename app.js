@@ -461,7 +461,17 @@ app.get('/get/all/transactions/yearly/:uid/:year', (req, res) => {
 }
 
 );
+//get all transctions by year
+app.get('/get/all/transactions/monthly/:uid/:month', (req, res) => {
+  console.log("calleddddddd")
+  Transaction.find({userId: req.params.uid, "soldDate" : {$regex : `.*${req.params.month}.*`}})
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
 
+);
 
 //get fixed amount
 app.get('/get/fixedAmount/:uid/:year/:month', (req, res) => {
