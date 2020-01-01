@@ -497,6 +497,8 @@ app.get('/get/fixedAmount/:uid/:year', (req, res) => {
 }
 
 );
+
+
 //get goal
 app.get('/get/goal/:uid/:year', (req, res) => {
   console.log(req.params.uid, req.params.year)
@@ -509,6 +511,43 @@ app.get('/get/goal/:uid/:year', (req, res) => {
 }
 
 );
+
+app.put("/edit/goal/:id/:goal", async (req, res) => {
+  Goal.updateOne({
+    _id: req.params.id,
+  }, {
+    $set: {
+      volume: req.params.goal,
+    }
+  }, {
+    upsert: true
+  }, function (err, user) {
+    res.status(200).send({
+      success: 'true',
+      message: 'goal updated'
+    })
+  });
+})
+
+app.put("/edit/bonus/:id/:year/:month/:bonus", async (req, res) => {
+  console.log(req.params)
+  Amount.updateOne({
+    userId: req.params.id,
+    selectedYear: req.params.year,
+    selectedMonth: req.params.month
+  }, {
+    $set: {
+      bonus: req.params.bonus
+    }
+  }, {
+    upsert: true
+  }, function (err, user) {
+    res.status(200).send({
+      success: 'true',
+      message: 'bonus updated'
+    })
+  });
+})
 
 
 // logout
