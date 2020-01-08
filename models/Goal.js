@@ -13,15 +13,15 @@ const GoalSchema = new Schema({
   },
   spiff: {
     type: String,
-    required: true
+    // required: true
   },
   commission: {
     type: String,
-    required: true
+    // required: true
   },
   bonus: {
     type: String,
-    required: true
+    // required: true
   },
   userId: {
     type: String,

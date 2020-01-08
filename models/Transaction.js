@@ -25,27 +25,27 @@ const TransSchema = new Schema({
   },
   downPayment: {
     type: String,
-    required: true
+    // required: true
   },
   spiff: {
     type: String,
-    required: true
+    // required: true
   },
   note: {
     type: String,
-    required: true
+    // required: true
   },
   pmdDeduction: {
     type: String,
-    required: true
+    // required: true
   },
   commission: {
     type: String,
-    required: true
+    // required: true
   },
   bonus: {
     type: String,
-    required: true
+    // required: true
   },
   userId: {
     type: String,

@@ -270,6 +270,60 @@ app.post('/register', function (req, res) {
 
 });
 
+
+// Change password Proccess
+app.put('/changePassword', function (req, res) {
+  console.log(req.body)
+
+  User.findOne({ _id: req.body.uid })
+    .then(response => {
+      console.log("check user", response)
+      
+      var op='';
+
+      bcrypt.compare(req.body.oldPass, response.password, function (err, isMatch) {
+        if (err) throw err;
+        if (isMatch) {
+            console.log("Match")
+            var nhp='';
+           
+            bcrypt.genSalt(10, function (err, salt) {
+              bcrypt.hash(req.body.newPass, salt, function (err, hash) {
+                if (err) {
+                  console.log(err);
+                }
+                nhp = hash;
+
+                User.updateOne({
+                  _id: req.body.uid,
+                }, {
+                  $set: {
+                    password: nhp
+                  }
+                }, {
+                  upsert: true
+                }, function (err, user) {
+                  console.log("Match")
+      
+                  res.send("match")
+                });
+                
+              });
+            });
+
+         
+        } else {
+          console.log("wrong")
+          res.send("wrong")
+        }
+      })
+     
+    })
+
+
+});
+
+
 // Login Process
 app.post('/login',
   function (req, res) {
@@ -512,20 +566,52 @@ app.get('/get/goal/:uid/:year', (req, res) => {
 
 );
 
-app.put("/edit/goal/:id/:goal", async (req, res) => {
+app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
+  console.log(req.params)
   Goal.updateOne({
-    _id: req.params.id,
+    selectedYear: req.params.year,
+    userId: req.params.uid
   }, {
     $set: {
       volume: req.params.goal,
+      userId: req.params.uid,
+      selectedYear:  req.params.year
     }
-  }, {
-    upsert: true
-  }, function (err, user) {
-    res.status(200).send({
-      success: 'true',
-      message: 'goal updated'
-    })
+  },  function (err, user) {
+    console.log("in function",err,user.nModified)
+    if(user.nModified === 0){
+      console.log("in error")
+      let goal = new Goal({
+        volume: req.params.goal,
+        userId: req.params.uid,
+        selectedYear:  req.params.year
+      });
+    
+      goal.save(function (err) {
+        if (err) {
+          console.error(err);
+          res.status(200).send({
+            success: 'false',
+            message: 'goal not post',
+            goal,
+          })
+        } else {
+          res.status(200).send({
+            success: 'true',
+            message: 'goal post',
+            goal,
+          })
+        }
+      });
+
+      
+    }else if(user.nModified === 1){
+      res.status(200).send({
+        success: 'true',
+        message: 'goal updated'
+      })
+    }
+     
   });
 })
 
