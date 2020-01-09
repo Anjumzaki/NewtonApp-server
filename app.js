@@ -552,6 +552,18 @@ app.get('/get/fixedAmount/:uid/:year', (req, res) => {
 
 );
 
+app.get('/get/user/:uid', (req, res) => {
+  console.log(req.params.uid, req.params.year)
+  User.findOne({ _id: req.params.uid })
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
 
 //get goal
 app.get('/get/goal/:uid/:year', (req, res) => {
