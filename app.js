@@ -348,18 +348,31 @@ app.put('/forgotPassword', function (req, res) {
     });
   });
   
-
- 
-
-
 });
+
+
+// Change change email Proccess
+app.put('/changeEmail', function (req, res) {
+  console.log(req.body)
+      User.updateOne({ _id: req.body.uid }, {
+        $set: {
+          email: req.body.newEmail
+        }
+      }, { upsert: true }, function (err, user) {
+        res.status(200).send({
+          success: 'true',
+          message: 'email updated'
+        })
+      });
+  });
+  
 
 // Login Process
 app.post('/login',
   function (req, res) {
     console.log("login req", req.body)
 
-    User.findOne({ userName: req.body.userName })
+    User.findOne({$or:[{ userName: req.body.userName},{email: req.body.userName}]})
       .then(response => {
         console.log("resp1", response)
 
