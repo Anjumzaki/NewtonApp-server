@@ -324,6 +324,36 @@ app.put('/changePassword', function (req, res) {
 });
 
 
+// Change forgot Password Proccess
+app.put('/forgotPassword', function (req, res) {
+  console.log(req.body)
+  var np=''
+
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(req.body.newPass, salt, function (err, hash) {
+      if (err) {
+        console.log(err);
+      }
+      np = hash;
+      User.updateOne({ _id: req.body.uid }, {
+        $set: {
+          password: hash
+        }
+      }, { upsert: true }, function (err, user) {
+        res.status(200).send({
+          success: 'true',
+          message: 'blog updated'
+        })
+      });
+    });
+  });
+  
+
+ 
+
+
+});
+
 // Login Process
 app.post('/login',
   function (req, res) {
@@ -491,6 +521,19 @@ app.post('/post/amount', async (req, res) => {
   });
 
 });
+
+
+//get user by user name
+app.get('/get/user/:userName', (req, res) => {
+
+  User.findOne({ userName: req.params.userName })
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
 
 //get all transctions
 app.get('/get/all/transactions/:uid', (req, res) => {
