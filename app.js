@@ -9,6 +9,7 @@ const User = require("./models/User");
 const Message = require("./models/Message");
 const Video = require("./models/Video");
 const Transaction = require("./models/Transaction");
+const MonthGoal = require("./models/monthGoal");
 const Goal = require("./models/Goal");
 const Amount = require("./models/Amount");
 const bcrypt = require('bcryptjs');
@@ -638,6 +639,56 @@ app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
   console.log(req.params)
   Goal.updateOne({
     selectedYear: req.params.year,
+    userId: req.params.uid
+  }, {
+    $set: {
+      volume: req.params.goal,
+      userId: req.params.uid,
+      selectedYear:  req.params.year
+    }
+  },  function (err, user) {
+    console.log("in function",err,user.nModified)
+    if(user.nModified === 0){
+      console.log("in error")
+      let goal = new Goal({
+        volume: req.params.goal,
+        userId: req.params.uid,
+        selectedYear:  req.params.year
+      });
+    
+      goal.save(function (err) {
+        if (err) {
+          console.error(err);
+          res.status(200).send({
+            success: 'false',
+            message: 'goal not post',
+            goal,
+          })
+        } else {
+          res.status(200).send({
+            success: 'true',
+            message: 'goal post',
+            goal,
+          })
+        }
+      });
+
+      
+    }else if(user.nModified === 1){
+      res.status(200).send({
+        success: 'true',
+        message: 'goal updated'
+      })
+    }
+     
+  });
+})
+
+app.post("/edit/goal/:uid/:year/:month/:goal", async (req, res) => {
+  console.log(req.params)
+  MonthGoal.updateOne({
+    selectedYear: req.params.year,
+    month:req.params.month,
     userId: req.params.uid
   }, {
     $set: {
