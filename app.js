@@ -642,6 +642,19 @@ app.get('/get/goal/:uid/:year', (req, res) => {
 
 );
 
+//get goal
+app.get('/get/goal/month/:uid/:year/:month', (req, res) => {
+  console.log(req.params.uid, req.params.year)
+  MonthGoal.findOne({ userId: req.params.uid, selectedYear: req.params.year, month: req.params.month })
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch(err => res.status(404).json(err));
+}
+
+);
+
 app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
   console.log(req.params)
   Goal.updateOne({
@@ -691,7 +704,7 @@ app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
   });
 })
 
-app.post("/edit/goal/:uid/:year/:month/:goal", async (req, res) => {
+app.post("/edit/goal/month/:uid/:year/:month/:goal", async (req, res) => {
   console.log(req.params)
   MonthGoal.updateOne({
     selectedYear: req.params.year,
@@ -701,16 +714,19 @@ app.post("/edit/goal/:uid/:year/:month/:goal", async (req, res) => {
     $set: {
       volume: req.params.goal,
       userId: req.params.uid,
-      selectedYear:  req.params.year
+      selectedYear:  req.params.year,
+      month: req.params.month
     }
   },  function (err, user) {
-    console.log("in function",err,user.nModified)
+    console.log("in function",user.nModified)
     if(user.nModified === 0){
       console.log("in error")
-      let goal = new Goal({
+      let goal = new MonthGoal({
         volume: req.params.goal,
         userId: req.params.uid,
-        selectedYear:  req.params.year
+        selectedYear:  req.params.year,
+        month: req.params.month
+
       });
     
       goal.save(function (err) {

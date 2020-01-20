@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const mGoalSchema = new Schema({
-    selectedYear: {
+  selectedYear: {
     type: String,
     required: true
   },
