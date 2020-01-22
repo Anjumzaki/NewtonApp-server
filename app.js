@@ -758,26 +758,73 @@ app.post("/edit/goal/month/:uid/:year/:month/:goal", async (req, res) => {
   });
 })
 
-app.put("/edit/bonus/:id/:year/:month/:bonus", async (req, res) => {
+app.put("/edit/bonus/:uid/:year/:month/:bonus", async (req, res) => {
   console.log(req.params)
-  Amount.updateOne({
-    userId: req.params.id,
-    selectedYear: req.params.year,
-    selectedMonth: req.params.month
-  }, {
-    $set: {
-      bonus: req.params.bonus
+  Transaction.find({userId: req.params.uid})
+  .then(data => { 
+    console.log("data",data)
+    var newData = [];
+    for (var i = 0;i < data.length;i++){
+      if((new Date(data[i].soldDate).getFullYear())== req.params.year){
+        if((new Date(data[i].soldDate).getMonth()+1)==req.params.month){
+          newData.push(data[i])
+        }
+      }
     }
-  }, {
-    upsert: true
-  }, function (err, user) {
-    res.status(200).send({
-      success: 'true',
-      message: 'bonus updated'
-    })
-  });
+
+    for(var i=0; i<newData.length; i++){
+      console.log("bonus",newData[i].bonus,"vol",newData[i].volume)
+        newData[i].bonus = newData[i].volume *(req.params.bonus/100)
+        console.log("bonus1",newData[i].bonus,"vol1",newData[i].volume)
+    }
+
+    for(var i=0; i<newData.length; i++){
+        axios.put('https://intense-harbor-45607.herokuapp.com/edit/trasc/'+newData[i]._id+"/"+newData[i].bonus)
+        .then(resp => console.log("bonus update",resp.data))
+        .catch(err => console.log(err))
+    }
+
+    console.log(newData)
+
+    res.json(newData);
+  })
+  .catch(err => res.status(404).json(err));
+  
 })
 
+// Cedit trasaction
+app.put('/edit/trasc/:id/:bonus', function (req, res) {
+  console.log("bonus",req.body)
+      Transaction.updateOne({ _id: req.params.id }, {
+        $set: {
+          bonus: req.params.bonus
+        }
+      }, { upsert: true }, function (err, user) {
+        res.status(200).send({
+          success: 'true',
+          message: 'bonus updated'
+        })
+      });
+  });
+
+// uid/:month/:year
+
+    // Amount.updateOne({
+    //   userId: req.params.id,
+    //   selectedYear: req.params.year,
+    //   selectedMonth: req.params.month
+    // }, {
+    //   $set: {
+    //     bonus: req.params.bonus
+    //   }
+    // }, {
+    //   upsert: true
+    // }, function (err, user) {
+    //   res.status(200).send({
+    //     success: 'true',
+    //     message: 'bonus updated'
+    //   })
+    // });
 
 // logout
 app.get('/logout', function (req, res) {
