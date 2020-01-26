@@ -552,14 +552,12 @@ app.get('/get/user/:userName', (req, res) => {
 
 //get all transctions
 app.get('/get/all/transactions/:uid', (req, res) => {
-
   Transaction.find({ userId: req.params.uid })
     .then(data => {
       res.json(data);
     })
     .catch(err => res.status(404).json(err));
 }
-
 );
 
 //get all transctions by year
@@ -571,7 +569,6 @@ app.get('/get/all/transactions/yearly/:uid/:year', (req, res) => {
     })
     .catch(err => res.status(404).json(err));
 }
-
 );
 //get all transctions by year
 app.get('/get/all/transactions/monthly/:uid/:month/:year', (req, res) => {
