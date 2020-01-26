@@ -804,6 +804,16 @@ app.put('/edit/trasc/:id/:bonus', function (req, res) {
       });
   });
 
+  app.delete('/delete/photo/:id', (req, res) => {
+    console.log("called",req.params.id)
+    fs.unlink("./uploads/"+req.params.id, function (err) {
+      if (err) throw err;
+      console.log('File deleted!');
+    });
+
+  }
+  );
+
 // uid/:month/:year
 
     // Amount.updateOne({
