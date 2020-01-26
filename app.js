@@ -650,7 +650,16 @@ app.get('/get/goal/month/:uid/:year/:month', (req, res) => {
     })
     .catch(err => res.status(404).json(err));
 }
-
+);
+app.get('/get/all/goals/:uid', (req, res) => {
+  MonthGoal.find({ userId: req.params.uid })
+    .then(data => {
+      console.log(data)
+      res.json(data);
+      console.log(data)
+    })
+    .catch(err => res.status(404).json(err));
+}
 );
 
 app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
