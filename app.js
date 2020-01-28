@@ -666,7 +666,7 @@ app.get('/get/all/goals/:uid', (req, res) => {
 app.get('/get/image/:uid/:year', (req, res) => {
   console.log(req.params.uid, req.params.year)
 
-  res.json( "intense-harbor-45607.herokuapp.com/getImages/" +
+  res.json( "https://intense-harbor-45607.herokuapp.com/getImages/" +
   "bg-" +
   req.params.uid +
   "-" +
