@@ -829,12 +829,14 @@ app.put('/edit/trasc/:id/:bonus', function (req, res) {
 
   app.delete('/delete/photo/:id', (req, res) => {
     console.log("called",req.params.id)
+    if (fs.existsSync("./uploads/"+req.params.id)) {
+    
     fs.unlink("./uploads/"+req.params.id, function (err) {
       if (err) throw err;
       console.log('File deleted!');
       res.send("deleted")
     });
-
+    }
   }
   );
 
