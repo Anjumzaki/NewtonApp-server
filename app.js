@@ -656,6 +656,20 @@ app.get('/get/goal/month/:uid/:year/:month', (req, res) => {
 
 );
 
+//get goal
+app.get('/get/image/:uid/:year', (req, res) => {
+  console.log(req.params.uid, req.params.year)
+
+  res.json( "http://192.168.0.102:3000/getImages/" +
+  "bg-" +
+  req.params.uid +
+  "-" +
+  req.params.year +
+  ".jpg");
+
+}
+);
+
 app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
   console.log(req.params)
   Goal.updateOne({
@@ -812,6 +826,7 @@ app.put('/edit/trasc/:id/:bonus', function (req, res) {
     fs.unlink("./uploads/"+req.params.id, function (err) {
       if (err) throw err;
       console.log('File deleted!');
+      res.send("deleted")
     });
 
   }
