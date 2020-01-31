@@ -724,7 +724,18 @@ app.post("/edit/goal/:uid/:year/:goal", async (req, res) => {
      
   });
 })
+app.get('/remove/goals', async (req, res) => {
+  MonthGoal.deleteOne({
+   }, function(err,user){
+    if(err){
+      res.send(err)
+    }
+    else{
+      res.send('succs')
+    }
+  })
 
+});
 app.post("/edit/goal/month/:uid/:year/:month/:goal", async (req, res) => {
   console.log(req.params)
   MonthGoal.updateOne({
