@@ -827,7 +827,8 @@ app.put('/edit/trasc/:id/:bonus', function (req, res) {
       });
   });
   app.post("/delete/trasc/:id", function(req, res) {
-    Transaction.removeById(req.params.id, function(err, output) {
+    console.log('od',req.params.id)
+    Transaction.findByIdAndRemove(req.params.id, function(err, output) {
       if (err) {
          res.send(err);
       }
