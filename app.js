@@ -826,6 +826,14 @@ app.put('/edit/trasc/:id/:bonus', function (req, res) {
         })
       });
   });
+  app.post("/delete/trasc/:id/", function(req, res) {
+    Transaction.removeById(req.params.id, function(err, output) {
+      if (err) {
+         res.send(err);
+      }
+      res.send(output === 1 ? { msg: "success" } : { msg: "error" });
+    });
+  });
 
   app.delete('/delete/photo/:id', (req, res) => {
     console.log("called",req.params.id)
